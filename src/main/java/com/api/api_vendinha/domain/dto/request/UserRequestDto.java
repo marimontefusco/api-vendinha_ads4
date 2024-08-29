@@ -1,4 +1,4 @@
-package com.api.api_vendinha.domain.dto;
+package com.api.api_vendinha.domain.dto.request;
 
 import lombok.*;
 
@@ -10,4 +10,5 @@ public class UserRequestDto {
     private String email;
     private String password;
     private String cpf_cnpj;
+    private Boolean is_active;
 }

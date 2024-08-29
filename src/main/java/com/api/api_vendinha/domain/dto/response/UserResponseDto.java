@@ -1,4 +1,4 @@
-package com.api.api_vendinha.domain.dto;
+package com.api.api_vendinha.domain.dto.response;
 
 import lombok.*;
 
@@ -6,9 +6,10 @@ import lombok.*;
 @AllArgsConstructor
 @Data
 public class UserResponseDto {
-    private Integer id;
+    private Long id;
     private String name;
     private String email;
     private String password;
     private String cpf_cnpj;
+    private Boolean is_active;
 }

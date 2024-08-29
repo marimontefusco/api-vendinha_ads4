@@ -1,7 +1,7 @@
 package com.api.api_vendinha.domain.service;
 
-import com.api.api_vendinha.domain.dto.UserRequestDto;
-import com.api.api_vendinha.domain.dto.UserResponseDto;
+import com.api.api_vendinha.domain.dto.request.UserRequestDto;
+import com.api.api_vendinha.domain.dto.response.UserResponseDto;
 
 public interface UserServiceInterface {
 

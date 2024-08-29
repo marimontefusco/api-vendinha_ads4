@@ -14,9 +14,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", unique = true)
-    private Integer id;
+    private Long id;
 
-    @Column(name = "nome", nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name="email")
@@ -25,7 +25,10 @@ public class User {
     @Column(name="senha")
     private String password;
 
-    @Column(name="cpf ou cnpj", nullable=false)
+    @Column(name="cpf_cnpj", nullable=false)
     private String cpf_cnpj;
+
+    @Column(name="is_active")
+    private Boolean is_active;
 
 }
