@@ -12,5 +12,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findById(Long id);
 
 }
-
+// especificar a entidade/classe que vai representar a tabela e o tipo do id -> User, Long
 //User findFirstByName(String name);

@@ -23,9 +23,10 @@ public class UserServiceImplement implements UserServiceInterface {
     @Override
     public UserResponseDto saveUser(UserRequestDto userRequestDto) {
 
+        // Cria nova instância de User
         User user = new User();
 
-        //Define o nome do usuário a partir do Dto
+        //Define o nome do usuário a partir do Dto de request do usuário
         user.setName(userRequestDto.getName());
         user.setEmail(userRequestDto.getEmail());
         user.setPassword(userRequestDto.getPassword());
@@ -42,14 +43,15 @@ public class UserServiceImplement implements UserServiceInterface {
         userResponseDto.setId(savedUser.getId());
         userResponseDto.setName(savedUser.getName());
         userResponseDto.setEmail(savedUser.getEmail());
-        userResponseDto.setPassword(savedUser.getPassword());
         userResponseDto.setCpf_cnpj(savedUser.getCpf_cnpj());
         userResponseDto.setIs_active(savedUser.getIs_active());
+            //não devolver a senha pro usuário
 
         // Retorna o Dto com as infos do usuário salvo
         return userResponseDto;
     }
 
+    // Método updateUser
     @Override
     public UserResponseDto updateUser(Long id, UserRequestDto userRequestDto) {
 
@@ -60,6 +62,7 @@ public class UserServiceImplement implements UserServiceInterface {
         userExists.setEmail(userRequestDto.getEmail());
         userExists.setPassword(userRequestDto.getPassword());
         userExists.setCpf_cnpj(userRequestDto.getCpf_cnpj());
+        userExists.setIs_active(userRequestDto.getIs_active());
 
         // Atualiza os dados e salva no bd
         userRepository.save(userExists);
@@ -70,8 +73,8 @@ public class UserServiceImplement implements UserServiceInterface {
         userResponseDto.setId(userExists.getId());
         userResponseDto.setName(userExists.getName());
         userResponseDto.setEmail(userExists.getEmail());
-        userResponseDto.setPassword(userExists.getPassword());
         userResponseDto.setCpf_cnpj(userExists.getCpf_cnpj());
+        userResponseDto.setIs_active(userExists.getIs_active());
 
         // Retorna o Dto com as infos do usuário salvo
         return userResponseDto;

@@ -5,9 +5,12 @@ import com.api.api_vendinha.domain.dto.response.UserResponseDto;
 
 public interface UserServiceInterface {
 
-    // Definição dos métodos q a Service terá que implementar
+    // Contrato -> Definição dos métodos q a Service terá que implementar
     UserResponseDto saveUser(UserRequestDto userRequestDto);
 
-
     UserResponseDto updateUser(Long id, UserRequestDto userRequestDto);
+
+    //void deleteUser(Long id);
+
+    //UserResponseDto updateStatus(Long id, UserRequestDto userRequestDto);
 }

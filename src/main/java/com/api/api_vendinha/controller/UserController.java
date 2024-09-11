@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 public class UserController {
 
-    //variável para injeção de dependencia do UserService
+    // variável para injeção de dependencia do UserService
     private final UserServiceInterface userService;
 
     // Construtor -> p a injeção de depend do UserService
@@ -21,17 +21,18 @@ public class UserController {
 
     // Métodos CRUD
     // POST
-    @PostMapping("/user/salvar")
+    @PostMapping("/save")
     public UserResponseDto saveUser(@RequestBody UserRequestDto userRequestDto) {
         return this.userService.saveUser(userRequestDto);
         //chama o Service p salvar o usuário e retornar a response
     }
 
     // UPDATE
-    @PutMapping("/user/{id}")
-    public UserResponseDto updateUser(@PathVariable Long id, @RequestBody UserRequestDto userRequestDto) {
+    @PutMapping("/update/{id}")
+    public UserResponseDto updateUser(@PathVariable Long id,
+                                      @RequestBody UserRequestDto userRequestDto) {
         return userService.updateUser(id, userRequestDto);
-        //chama o Service para salvar o usuário e  retorna a resposta
+        //chama o Service para salvar o usuário e retorna a resposta
     }
 
 }
