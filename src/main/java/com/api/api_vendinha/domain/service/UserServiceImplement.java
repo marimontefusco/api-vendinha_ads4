@@ -36,19 +36,8 @@ public class UserServiceImplement implements UserServiceInterface {
         // Salva o usuário no bd e obtém a entidade persistida com o id gerado
         User savedUser = userRepository.save(user);
 
-        // Cria um Dto de resposta com as infos do usuário salvo
-        UserResponseDto userResponseDto = new UserResponseDto();
-            // novo obj do tipo UserResponseDto
-
-        userResponseDto.setId(savedUser.getId());
-        userResponseDto.setName(savedUser.getName());
-        userResponseDto.setEmail(savedUser.getEmail());
-        userResponseDto.setCpf_cnpj(savedUser.getCpf_cnpj());
-        userResponseDto.setIs_active(savedUser.getIs_active());
-            //não devolver a senha pro usuário
-
-        // Retorna o Dto com as infos do usuário salvo
-        return userResponseDto;
+        // Cria um DTO de resposta com as infos do usuário salvo
+        return getUserDto(savedUser);
     }
 
     // Método updateUser
@@ -65,16 +54,23 @@ public class UserServiceImplement implements UserServiceInterface {
         userExists.setIs_active(userRequestDto.getIs_active());
 
         // Atualiza os dados e salva no bd
-        userRepository.save(userExists);
+        User savedUser = userRepository.save(userExists);
+
+        return getUserDto(savedUser);
+    }
+
+    private UserResponseDto getUserDto(User user) {
 
         // Cria um Dto de resposta com as infos do usuário salvo
         UserResponseDto userResponseDto = new UserResponseDto();
+                            // novo obj do tipo UserResponseDto
 
-        userResponseDto.setId(userExists.getId());
-        userResponseDto.setName(userExists.getName());
-        userResponseDto.setEmail(userExists.getEmail());
-        userResponseDto.setCpf_cnpj(userExists.getCpf_cnpj());
-        userResponseDto.setIs_active(userExists.getIs_active());
+        userResponseDto.setId(user.getId());
+        userResponseDto.setName(user.getName());
+        userResponseDto.setEmail(user.getEmail());
+        userResponseDto.setCpf_cnpj(user.getCpf_cnpj());
+        userResponseDto.setIs_active(user.getIs_active());
+            //não devolver a senha pro usuário
 
         // Retorna o Dto com as infos do usuário salvo
         return userResponseDto;
