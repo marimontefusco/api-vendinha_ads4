@@ -37,8 +37,7 @@ public class UserController {
 
     //GET
     @GetMapping("/search/{id}")
-    public UserResponseDto getUser(@PathVariable Long id
-                                   ) {
+    public UserResponseDto getUser(@PathVariable Long id) {
         return userService.getUser(id);
     }
 }
