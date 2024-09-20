@@ -23,7 +23,7 @@ public class UserController {
     // POST
     @PostMapping("/save")
     public UserResponseDto saveUser(@RequestBody UserRequestDto userRequestDto) {
-        return this.userService.saveUser(userRequestDto);
+        return userService.saveUser(userRequestDto);
         //chama o Service p salvar o usuário e retornar a response
     }
 
@@ -35,7 +35,21 @@ public class UserController {
         //chama o Service para salvar o usuário e retorna a resposta
     }
 
+    //GET
+    @GetMapping("/search/{id}")
+    public UserResponseDto getUser(@PathVariable Long id
+                                   ) {
+        return userService.getUser(id);
+    }
 }
+
+
+//    // UPDATE STATUS
+//    @PutMapping("/status/{id}")
+//    public UserResponseDto updateStatus(@PathVariable Long id,
+//                                        @RequestBody UserRequestDto userRequestDto) {
+//        return userService.updateStatus(id, userRequestDto);
+//    }
 
 //ORM hibernate -> mapeamento de objeto relacional -> pra gente nao precisar escrever sql puro
 //mapeia a consulta feita em java e transforma em SQL

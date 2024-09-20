@@ -19,7 +19,7 @@ public class UserServiceImplement implements UserServiceInterface {
         this.userRepository = userRepository;
     }
 
-    // Método saveUser
+    // Método POST
     @Override
     public UserResponseDto saveUser(UserRequestDto userRequestDto) {
 
@@ -40,12 +40,12 @@ public class UserServiceImplement implements UserServiceInterface {
         return getUserDto(savedUser);
     }
 
-    // Método updateUser
+    // Método UPDATE
     @Override
     public UserResponseDto updateUser(Long id, UserRequestDto userRequestDto) {
 
         // Verifica se o usuário existe
-        User userExists = (User) userRepository.findById(id).orElseThrow();
+        User userExists = userRepository.findById(id).orElseThrow();
 
         userExists.setName(userRequestDto.getName());
         userExists.setEmail(userRequestDto.getEmail());
@@ -59,12 +59,25 @@ public class UserServiceImplement implements UserServiceInterface {
         return getUserDto(savedUser);
     }
 
+    // Método GET
+    @Override
+    public UserResponseDto getUser(Long id) {
+
+        // Verifica se o user existe
+        User userExists = userRepository.findById(id).orElseThrow();
+
+        // Retorna o DTO com as infos o usuário encontrado
+        return getUserDto(userExists);
+    }
+
+    // Função p retornar o userResponseDto
     private UserResponseDto getUserDto(User user) {
 
         // Cria um Dto de resposta com as infos do usuário salvo
         UserResponseDto userResponseDto = new UserResponseDto();
                             // novo obj do tipo UserResponseDto
 
+        // Seta os atributos da resposta do Dto
         userResponseDto.setId(user.getId());
         userResponseDto.setName(user.getName());
         userResponseDto.setEmail(user.getEmail());
@@ -75,10 +88,4 @@ public class UserServiceImplement implements UserServiceInterface {
         // Retorna o Dto com as infos do usuário salvo
         return userResponseDto;
     }
-
 }
-
-
-
-
-
