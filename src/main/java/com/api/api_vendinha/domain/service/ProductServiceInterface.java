@@ -10,4 +10,7 @@ public interface ProductServiceInterface {
     ProductResponseDto updateProduct(Long id, ProductRequestDto productRequestDto);
 
     ProductResponseDto getProduct(Long id);
+
+    // SET STATUS -
+    ProductResponseDto setActiveStatus(Long id, ProductRequestDto productRequestDto);
 }

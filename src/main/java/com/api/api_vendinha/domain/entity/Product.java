@@ -25,4 +25,11 @@ public class Product {
 
     @Column(name = "price", nullable = false)
     private Float price;
+
+    @Column
+    private Boolean isActive;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

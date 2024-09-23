@@ -28,6 +28,7 @@ public class ProductServiceImplement implements ProductServiceInterface {
         product.setName(productRequestDto.getName());
         product.setQuantity(productRequestDto.getQuantity());
         product.setPrice(productRequestDto.getPrice());
+        product.setIsActive(productRequestDto.getIsActive());
 
         // Salva o produto no bd e obtém a entidade persistida com o id gerado
         Product savedProduct = productRepository.save(product);
@@ -44,6 +45,7 @@ public class ProductServiceImplement implements ProductServiceInterface {
         productExists.setName(productRequestDto.getName());
         productExists.setQuantity(productRequestDto.getQuantity());
         productExists.setPrice(productRequestDto.getPrice());
+        productExists.setIsActive(productRequestDto.getIsActive());
 
         // Atualiza os dados e salva no bd
         Product savedProduct = productRepository.save(productExists);
@@ -51,6 +53,7 @@ public class ProductServiceImplement implements ProductServiceInterface {
         return getProductDto(savedProduct);
     }
 
+    // GET
     @Override
     public ProductResponseDto getProduct(Long id) {
 
@@ -59,6 +62,20 @@ public class ProductServiceImplement implements ProductServiceInterface {
 
         // Retorna o DTO com as infos do usuario encontrado
         return getProductDto(productExists);
+    }
+
+    // SET STATUS -
+    @Override
+    public ProductResponseDto setActiveStatus(Long id, ProductRequestDto productRequestDto) {
+
+        //Verifica se o Product existe
+        Product productExists = productRepository.findById(id).orElseThrow();
+
+        productExists.setIsActive(productRequestDto.getIsActive());
+        productRepository.save(productExists);
+
+        // Retorna o DTO com as infos do usuario encontrado
+        return  getProductDto(productExists);
     }
 
     // Função pra retornar o productResponseDto

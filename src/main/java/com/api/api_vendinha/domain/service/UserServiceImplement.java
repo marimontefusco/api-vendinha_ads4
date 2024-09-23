@@ -2,21 +2,28 @@ package com.api.api_vendinha.domain.service;
 
 import com.api.api_vendinha.domain.dto.request.UserRequestDto;
 import com.api.api_vendinha.domain.dto.response.UserResponseDto;
+import com.api.api_vendinha.domain.entity.Product;
 import com.api.api_vendinha.domain.entity.User;
+import com.api.api_vendinha.infrastructure.repository.ProductRepository;
 import com.api.api_vendinha.infrastructure.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImplement implements UserServiceInterface {
 
     // variável do userRepository para persistência de dados de usuários
     private final UserRepository userRepository;
+    private final ProductRepository productRepository;
 
     // Construtor p injeção de depend do UserRepository
     @Autowired
-    public UserServiceImplement(UserRepository userRepository) {
+    public UserServiceImplement(UserRepository userRepository, ProductRepository productRepository) {
         this.userRepository = userRepository;
+        this.productRepository = productRepository;
     }
 
     // Método POST
@@ -35,6 +42,20 @@ public class UserServiceImplement implements UserServiceInterface {
 
         // Salva o usuário no bd e obtém a entidade persistida com o id gerado
         User savedUser = userRepository.save(user);
+
+        List<Product> products = userRequestDto.getProductRequestDto().stream().map(dto -> {
+            Product product = new Product();
+
+            product.setUser(savedUser);
+            product.setName(dto.getName());
+            product.setQuantity(dto.getQuantity());
+            product.setPrice(dto.getPrice());
+            product.setIsActive(dto.getIsActive());
+
+            return product;
+        }).collect(Collectors.toList());
+
+        productRepository.saveAll(products);
 
         // Cria um DTO de resposta com as infos do usuário salvo
         return getUserDto(savedUser);

@@ -3,6 +3,8 @@ package com.api.api_vendinha.domain.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity //entity -> classe responsável por representar a tabela e comunicar com o BD
 @Table(name = "users")
 @NoArgsConstructor
@@ -30,5 +32,8 @@ public class User {
 
     @Column(name="is_active", nullable = false)
     private Boolean is_active;
+
+    @OneToMany(mappedBy = "user")
+    private List<Product> products;
 
 }
