@@ -43,6 +43,7 @@ public class UserServiceImplement implements UserServiceInterface {
         // Salva o usuário no bd e obtém a entidade persistida com o id gerado
         User savedUser = userRepository.save(user);
 
+        // Converte numa collection -> coleção de lista de todos os objetos criados a partir de cada atributo
         List<Product> products = userRequestDto.getProductRequestDto().stream().map(dto -> {
             Product product = new Product();
 
@@ -55,11 +56,15 @@ public class UserServiceImplement implements UserServiceInterface {
             return product;
         }).collect(Collectors.toList());
 
+        // agora ele pode salvar a lista toda de produtos
         productRepository.saveAll(products);
 
         // Cria um DTO de resposta com as infos do usuário salvo
         return getUserDto(savedUser);
     }
+    //stream() -> api com n métodos, inclusive map()
+    //map() -> percorrer uma lista com indexação de novos objetos dessa lista sem perder referencias(index)
+    //.collect(Collectors.toList()) -> transforma em collector
 
     // Método UPDATE
     @Override
@@ -89,6 +94,13 @@ public class UserServiceImplement implements UserServiceInterface {
 
         // Retorna o DTO com as infos o usuário encontrado
         return getUserDto(userExists);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        User userExists = userRepository.findById(id).orElseThrow();
+
+        userRepository.deleteById(userExists.getId());
     }
 
     // Função p retornar o userResponseDto

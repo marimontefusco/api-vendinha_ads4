@@ -33,7 +33,7 @@ public class User {
     @Column(name="is_active", nullable = false)
     private Boolean is_active;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user")//mapeamento c/ entity User
     private List<Product> products;
 
 }

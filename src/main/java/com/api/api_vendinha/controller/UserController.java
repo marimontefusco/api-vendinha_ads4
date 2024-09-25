@@ -4,6 +4,7 @@ import com.api.api_vendinha.domain.dto.request.UserRequestDto;
 import com.api.api_vendinha.domain.dto.response.UserResponseDto;
 import com.api.api_vendinha.domain.service.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -39,6 +40,13 @@ public class UserController {
     @GetMapping("/search/{id}")
     public UserResponseDto getUser(@PathVariable Long id) {
         return userService.getUser(id);
+    }
+
+    //DELETE
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.ok("Usuário excluído com sucesso.");
     }
 }
 

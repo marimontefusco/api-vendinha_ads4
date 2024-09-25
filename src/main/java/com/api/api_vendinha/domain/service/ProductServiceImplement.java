@@ -3,9 +3,13 @@ package com.api.api_vendinha.domain.service;
 import com.api.api_vendinha.domain.dto.request.ProductRequestDto;
 import com.api.api_vendinha.domain.dto.response.ProductResponseDto;
 import com.api.api_vendinha.domain.entity.Product;
+import com.api.api_vendinha.domain.entity.Sale;
 import com.api.api_vendinha.infrastructure.repository.ProductRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class ProductServiceImplement implements ProductServiceInterface {
@@ -33,7 +37,7 @@ public class ProductServiceImplement implements ProductServiceInterface {
         // Salva o produto no bd e obtém a entidade persistida com o id gerado
         Product savedProduct = productRepository.save(product);
 
-        return getProductDto(savedProduct);
+        return createProductDto(savedProduct);
     }
 
     // UPDATE
@@ -50,7 +54,7 @@ public class ProductServiceImplement implements ProductServiceInterface {
         // Atualiza os dados e salva no bd
         Product savedProduct = productRepository.save(productExists);
 
-        return getProductDto(savedProduct);
+        return createProductDto(savedProduct);
     }
 
     // GET
@@ -61,7 +65,16 @@ public class ProductServiceImplement implements ProductServiceInterface {
         Product productExists = productRepository.findById(id).orElseThrow();
 
         // Retorna o DTO com as infos do usuario encontrado
-        return getProductDto(productExists);
+        return createProductDto(productExists);
+    }
+
+    // DELETE
+    @Override
+    public void deleteProduct(Long id) {
+
+        Product productExists = productRepository.findById(id).orElseThrow();
+
+        productRepository.deleteById(productExists.getId());
     }
 
     // SET STATUS -
@@ -75,11 +88,11 @@ public class ProductServiceImplement implements ProductServiceInterface {
         productRepository.save(productExists);
 
         // Retorna o DTO com as infos do usuario encontrado
-        return  getProductDto(productExists);
+        return  createProductDto(productExists);
     }
 
     // Função pra retornar o productResponseDto
-    private ProductResponseDto getProductDto(Product product) {
+    private ProductResponseDto createProductDto(Product product) {
 
         // Cria um Dto de resposta com as infos do produto salvo
         ProductResponseDto productResponseDto = new ProductResponseDto();

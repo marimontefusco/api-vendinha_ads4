@@ -11,6 +11,8 @@ public interface ProductServiceInterface {
 
     ProductResponseDto getProduct(Long id);
 
-    // SET STATUS -
+    // SET STATUS:
     ProductResponseDto setActiveStatus(Long id, ProductRequestDto productRequestDto);
+
+    void deleteProduct(Long id);
 }

@@ -1,10 +1,10 @@
 package com.api.api_vendinha.domain.service;
 
-import com.api.api_vendinha.domain.dto.request.ProductRequestDto;
 import com.api.api_vendinha.domain.dto.request.SaleRequestDto;
 import com.api.api_vendinha.domain.dto.response.SaleResponseDto;
 import com.api.api_vendinha.domain.entity.Sale;
 import com.api.api_vendinha.infrastructure.repository.SaleRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +60,8 @@ public class SaleServiceImplement implements SaleServiceInterface {
     //DELETE
     @Override
     public void deleteSale(Long id) {
-        Sale saleExists = saleRepository.findById(id).orElseThrow();
+        Sale saleExists = saleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("A venda de id " + id + " não foi encontrada."));
 
         saleRepository.deleteById(saleExists.getId());
     }

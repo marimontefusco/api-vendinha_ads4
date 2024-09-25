@@ -8,10 +8,14 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+                                    // <entidade que representa a tb, tipo do id>
 
     Optional<User> findById(Long id);
     //retorna um Optional contendo o usuário encontrado
     // ou um Optional vazio se o user não existir
+
+    //User findFirstByName(String name);
+
 }
-// especificar a entidade/classe que vai representar a tabela e o tipo do id -> User, Long
-//User findFirstByName(String name);
+
+

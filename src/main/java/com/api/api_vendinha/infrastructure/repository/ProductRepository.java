@@ -12,4 +12,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findById(Long id);
         //retorna um Optional contendo o usuário encontrado
         // ou um Optional vazio se o user não existir
+
+    void delete(Product productExists);
+
 }
