@@ -1,5 +1,6 @@
 package com.api.api_vendinha.domain.dto.request;
 
+import com.api.api_vendinha.domain.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,4 +15,5 @@ public class ProductRequestDto {
     private Integer quantity;
     private Float price;
     private Boolean isActive;
+    private User user;
 }

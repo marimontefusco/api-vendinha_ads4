@@ -15,4 +15,5 @@ public class UserRequestDto {
     private Boolean is_active;
 
     private List<ProductRequestDto> productRequestDto;
+    private List<SaleRequestDto> saleRequestDto;
 }

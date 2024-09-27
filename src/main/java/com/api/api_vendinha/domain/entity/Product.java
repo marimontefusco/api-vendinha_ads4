@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name="products")
 @NoArgsConstructor
@@ -26,10 +28,15 @@ public class Product {
     @Column(name = "price", nullable = false)
     private Float price;
 
-    @Column
+    @Column(name = "isActive")
     private Boolean isActive;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+//    @ManyToOne
+//    @JoinColumn(name = "product_id")
+//    private List<Sale> sales;
 }
+
