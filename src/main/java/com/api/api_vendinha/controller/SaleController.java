@@ -2,6 +2,8 @@ package com.api.api_vendinha.controller;
 
 import com.api.api_vendinha.domain.dto.request.SaleRequestDto;
 import com.api.api_vendinha.domain.dto.response.SaleResponseDto;
+import com.api.api_vendinha.domain.entity.Product;
+import com.api.api_vendinha.domain.service.ProductServiceInterface;
 import com.api.api_vendinha.domain.service.SaleServiceInterface;
 import com.api.api_vendinha.infrastructure.repository.ProductRepository;
 import com.api.api_vendinha.infrastructure.repository.SaleRepository;
@@ -9,17 +11,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/sales")
 public class SaleController {
 
     private final SaleServiceInterface saleService;
-    private final ProductRepository productRepository;
+    private final ProductServiceInterface productService;
 
     @Autowired
-    public SaleController(SaleServiceInterface saleService, ProductRepository productRepository) {
+    public SaleController(SaleServiceInterface saleService, ProductServiceInterface productService) {
         this.saleService = saleService;
-        this.productRepository = productRepository;
+        this.productService = productService;
     }
 
     // Métodos:

@@ -2,8 +2,11 @@ package com.api.api_vendinha.domain.service;
 
 import com.api.api_vendinha.domain.dto.request.SaleRequestDto;
 import com.api.api_vendinha.domain.dto.response.SaleResponseDto;
+import com.api.api_vendinha.domain.entity.Product;
 import com.api.api_vendinha.domain.entity.Sale;
+import com.api.api_vendinha.infrastructure.repository.ProductRepository;
 import com.api.api_vendinha.infrastructure.repository.SaleRepository;
+import com.api.api_vendinha.infrastructure.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +15,14 @@ import org.springframework.stereotype.Service;
 public class SaleServiceImplement implements SaleServiceInterface {
 
     private final SaleRepository saleRepository;
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public SaleServiceImplement(SaleRepository saleRepository) {
+    public SaleServiceImplement(SaleRepository saleRepository, ProductRepository productRepository, UserRepository userRepository) {
         this.saleRepository = saleRepository;
+        this.productRepository = productRepository;
+        this.userRepository = userRepository;
     }
 
     //POST
@@ -24,9 +31,25 @@ public class SaleServiceImplement implements SaleServiceInterface {
 
         Sale sale = new Sale();
 
+        Product product = productRepository.findById(saleRequestDto.getProduct().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado"));
+
+        // Verifica se a qntidade pedida está disponível no estoque
+        if (product.getQuantity() < saleRequestDto.getQuantity()) {
+            throw new IllegalArgumentException(("Estoque insuficiente do produto: " + product.getName()));
+        }
+
+        // Atualiza a qntidade no estoque depois da venda
+        product.setQuantity(product.getQuantity() - saleRequestDto.getQuantity());
+        productRepository.save(product);
+
         // Define a venda a partir do dto de request
+        sale.setUser(userRepository.findById(saleRequestDto.getUser().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado")));
+        sale.setProduct(product);
         sale.setQuantity(saleRequestDto.getQuantity());
-        sale.setPrice(saleRequestDto.getPrice());
+        sale.setPrice(product.getPrice() * saleRequestDto.getQuantity());
+                    // P.final = P.unidade * qntidade
 
         // Salva a venda no bd e obtém a entidade persistida com o id gerado
         Sale savedSale = saleRepository.save(sale);
