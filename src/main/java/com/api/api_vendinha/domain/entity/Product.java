@@ -35,8 +35,7 @@ public class Product {
     @JoinColumn(name = "user_id")
     private User user;
 
-//    @ManyToOne
-//    @JoinColumn(name = "product_id")
-//    private List<Sale> sales;
+    @OneToMany(mappedBy = "product")
+    private List<Sale> sales;
 }
 

@@ -5,20 +5,25 @@ import com.api.api_vendinha.domain.dto.response.ProductResponseDto;
 import com.api.api_vendinha.domain.entity.Product;
 import com.api.api_vendinha.domain.entity.Sale;
 import com.api.api_vendinha.infrastructure.repository.ProductRepository;
+import com.api.api_vendinha.infrastructure.repository.SaleRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImplement implements ProductServiceInterface {
 
     private final ProductRepository productRepository;
+    private final SaleRepository saleRepository;
 
     @Autowired
-    public ProductServiceImplement(ProductRepository productRepository) {
+    public ProductServiceImplement(ProductRepository productRepository, SaleRepository saleRepository) {
         this.productRepository = productRepository;
+        this.saleRepository = saleRepository;
     }
 
     // POST
@@ -36,6 +41,19 @@ public class ProductServiceImplement implements ProductServiceInterface {
 
         // Salva o produto no bd e obtém a entidade persistida com o id gerado
         Product savedProduct = productRepository.save(product);
+
+        List<Sale>  sales = productRequestDto.getSaleRequestDto().stream().map(
+                dto -> {
+                    Sale sale = new Sale();
+
+                    sale.setProduct(savedProduct);
+                    sale.setQuantity(dto.getQuantity());
+                    sale.setPrice(dto.getPrice());
+
+                    return sale;
+        }).collect(Collectors.toList());
+
+        saleRepository.saveAll(sales);
 
         return createProductDto(savedProduct);
     }

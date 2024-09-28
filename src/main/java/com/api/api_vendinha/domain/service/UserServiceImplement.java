@@ -64,16 +64,17 @@ public class UserServiceImplement implements UserServiceInterface {
         // agora ele pode salvar a lista toda de produtos
         productRepository.saveAll(products);
 
-        List<Sale> sales =  userRequestDto.getSaleRequestDto().stream().map(dto -> {
-            Sale sale = new Sale();
+        List<Sale> sales =  userRequestDto.getSaleRequestDto().stream().map(
+                dto -> {
+                    Sale sale = new Sale();
 
-            sale.setUser(savedUser);
-            //sale.setProduct()
-            sale.setQuantity(dto.getQuantity());
-            sale.setPrice(dto.getPrice());
+                    sale.setUser(savedUser);
+                    //sale.setProduct()
+                    sale.setQuantity(dto.getQuantity());
+                    sale.setPrice(dto.getPrice());
 
-            return sale;
-        }).collect(Collectors.toList());
+                    return sale;
+                }).collect(Collectors.toList());
 
         // agora ele pode salvar a lista toda de vendas
         saleRepository.saveAll(sales);
