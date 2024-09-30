@@ -28,7 +28,7 @@ public class Product {
     @Column(name = "price", nullable = false)
     private Float price;
 
-    @Column(name = "isActive")
+    @Column(name = "isActive", nullable = false)
     private Boolean isActive;
 
     @ManyToOne

@@ -42,7 +42,8 @@ public class UserServiceImplement implements UserServiceInterface {
         user.setEmail(userRequestDto.getEmail());
         user.setPassword(userRequestDto.getPassword());
         user.setCpf_cnpj(userRequestDto.getCpf_cnpj());
-        user.setIs_active(userRequestDto.getIs_active());
+        user.setIs_active(Boolean.TRUE);
+            //user.setIs_active(userRequestDto.getIs_active());
 
         // Salva o usuário no bd e obtém a entidade persistida com o id gerado
         User savedUser = userRepository.save(user);
@@ -80,7 +81,7 @@ public class UserServiceImplement implements UserServiceInterface {
         saleRepository.saveAll(sales);
 
         // Cria um DTO de resposta com as infos do usuário salvo
-        return getUserDto(savedUser);
+        return createUserDto(savedUser);
     }
     //stream() -> api com n métodos, inclusive map()
     //map() -> percorrer uma lista com indexação de novos objetos dessa lista sem perder referencias(index)
@@ -102,7 +103,7 @@ public class UserServiceImplement implements UserServiceInterface {
         // Atualiza os dados e salva no bd
         User savedUser = userRepository.save(userExists);
 
-        return getUserDto(savedUser);
+        return createUserDto(savedUser);
     }
 
     // Método GET
@@ -113,7 +114,7 @@ public class UserServiceImplement implements UserServiceInterface {
         User userExists = userRepository.findById(id).orElseThrow();
 
         // Retorna o DTO com as infos o usuário encontrado
-        return getUserDto(userExists);
+        return createUserDto(userExists);
     }
 
     @Override
@@ -123,8 +124,19 @@ public class UserServiceImplement implements UserServiceInterface {
         userRepository.deleteById(userExists.getId());
     }
 
+    @Override
+    public UserResponseDto setUserStatus(Long id, UserRequestDto is_active) {
+
+        User userExists = userRepository.findById(id).orElseThrow();
+
+        userExists.setIs_active(is_active.getIs_active());
+        userRepository.save(userExists);
+
+        return createUserDto(userExists);
+    }
+
     // Função p retornar o userResponseDto
-    private UserResponseDto getUserDto(User user) {
+    private UserResponseDto createUserDto(User user) {
 
         // Cria um Dto de resposta com as infos do usuário salvo
         UserResponseDto userResponseDto = new UserResponseDto();

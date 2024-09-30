@@ -27,13 +27,13 @@ public class User {
     @Column(name="senha", nullable = false)
     private String password;
 
-    @Column(name="cpf_cnpj", nullable=false)
+    @Column(name="cpf_cnpj", nullable=false, unique = true)
     private String cpf_cnpj;
 
     @Column(name="is_active", nullable = false)
     private Boolean is_active;
 
-    @OneToMany(mappedBy = "user")//mapeamento c/ entity User
+    @OneToMany(mappedBy = "user") //mapeado por entity User
     private List<Product> products;
 
     @OneToMany(mappedBy = "user")

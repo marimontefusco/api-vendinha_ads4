@@ -10,11 +10,12 @@ public interface UserServiceInterface {
 
     UserResponseDto updateUser(Long id, UserRequestDto userRequestDto);
 
-    //UserResponseDto updateStatus(Long id, UserRequestDto userRequestDto);
-
     UserResponseDto getUser(Long id);
 
     void deleteUser(Long id);
+
+    UserResponseDto setUserStatus(Long id, UserRequestDto is_active);
+
 }
 
 
