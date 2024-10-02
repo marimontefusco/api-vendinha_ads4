@@ -16,4 +16,7 @@ public class UserRequestDto {
 
     private List<ProductRequestDto> productRequestDto;
     private List<SaleRequestDto> saleRequestDto;
+
 }
+
+//private List<SaleRequestDto> saleRequestDto;

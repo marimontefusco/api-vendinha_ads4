@@ -4,6 +4,7 @@ import com.api.api_vendinha.domain.dto.request.SaleRequestDto;
 import com.api.api_vendinha.domain.dto.response.SaleResponseDto;
 import com.api.api_vendinha.domain.entity.Product;
 import com.api.api_vendinha.domain.entity.Sale;
+import com.api.api_vendinha.domain.entity.User;
 import com.api.api_vendinha.infrastructure.repository.ProductRepository;
 import com.api.api_vendinha.infrastructure.repository.SaleRepository;
 import com.api.api_vendinha.infrastructure.repository.UserRepository;
@@ -29,9 +30,15 @@ public class SaleServiceImplement implements SaleServiceInterface {
     @Override
     public SaleResponseDto saveSale(SaleRequestDto saleRequestDto) {
 
+        // Cria uma nova venda
         Sale sale = new Sale();
 
-        Product product = productRepository.findById(saleRequestDto.getProduct().getId())
+        // Verifica se o usuário existe
+        User user = userRepository.findById(saleRequestDto.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+
+        // Verifica se o produto existe
+        Product product = productRepository.findById(saleRequestDto.getProductId())
                 .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado"));
 
         // Verifica se a qntidade pedida está disponível no estoque
@@ -39,12 +46,12 @@ public class SaleServiceImplement implements SaleServiceInterface {
             throw new IllegalArgumentException(("Estoque insuficiente do produto: " + product.getName()));
         }
 
-        // Atualiza a qntidade no estoque depois da venda
+        // Subtrai qntidade vendida e atualiza o estoque depois da venda
         product.setQuantity(product.getQuantity() - saleRequestDto.getQuantity());
         productRepository.save(product);
 
         // Define a venda a partir do dto de request
-        sale.setUser(userRepository.findById(saleRequestDto.getUser().getId())
+        sale.setUser(userRepository.findById(saleRequestDto.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado")));
         sale.setProduct(product);
         sale.setQuantity(saleRequestDto.getQuantity());

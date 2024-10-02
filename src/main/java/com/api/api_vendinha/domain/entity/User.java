@@ -33,9 +33,11 @@ public class User {
     @Column(name="is_active", nullable = false)
     private Boolean is_active;
 
-    @OneToMany(mappedBy = "user") //mapeado por entity User
+    @OneToMany(mappedBy = "user") //mapeado em Product -> atributo User user;
     private List<Product> products;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy="user") //mapeado em Sale -> atributo User user;
     private List<Sale> sales;
+
 }
+

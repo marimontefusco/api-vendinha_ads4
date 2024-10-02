@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class SaleRequestDto {
-    private User user;
-    private Product product;
+    private Long userId;
+    private Long productId;
     private Integer quantity;
     private Float price;
 }

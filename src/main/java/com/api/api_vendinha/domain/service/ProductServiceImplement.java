@@ -4,8 +4,10 @@ import com.api.api_vendinha.domain.dto.request.ProductRequestDto;
 import com.api.api_vendinha.domain.dto.response.ProductResponseDto;
 import com.api.api_vendinha.domain.entity.Product;
 import com.api.api_vendinha.domain.entity.Sale;
+import com.api.api_vendinha.domain.entity.User;
 import com.api.api_vendinha.infrastructure.repository.ProductRepository;
 import com.api.api_vendinha.infrastructure.repository.SaleRepository;
+import com.api.api_vendinha.infrastructure.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,19 +20,28 @@ import java.util.stream.Collectors;
 public class ProductServiceImplement implements ProductServiceInterface {
 
     private final ProductRepository productRepository;
-    private final SaleRepository saleRepository;
+    private final UserRepository userRepository;
+    //private final SaleRepository saleRepository;
 
     @Autowired
-    public ProductServiceImplement(ProductRepository productRepository, SaleRepository saleRepository) {
+    public ProductServiceImplement(
+            ProductRepository productRepository,
+            UserRepository userRepository
+//            SaleRepository saleRepository,
+    ) {
         this.productRepository = productRepository;
-        this.saleRepository = saleRepository;
+        this.userRepository = userRepository;
+        //        this.saleRepository = saleRepository;
     }
 
     // POST
     @Override
     public ProductResponseDto saveProduct(ProductRequestDto productRequestDto) {
 
-        // nova instância de Product
+        // nova instância de User
+        User user = userRepository.findById(productRequestDto.getUserId()).orElseThrow();
+
+        // Nova instância de Product
         Product product = new Product();
 
         // Define o produto a partir do dto de request
@@ -38,22 +49,23 @@ public class ProductServiceImplement implements ProductServiceInterface {
         product.setQuantity(productRequestDto.getQuantity());
         product.setPrice(productRequestDto.getPrice());
         product.setIsActive(productRequestDto.getIsActive());
+        product.setUser(user); // vincula o produto ao usuário
 
         // Salva o produto no bd e obtém a entidade persistida com o id gerado
         Product savedProduct = productRepository.save(product);
 
-        List<Sale>  sales = productRequestDto.getSaleRequestDto().stream().map(
-                dto -> {
-                    Sale sale = new Sale();
+//        List<Sale>  sales = productRequestDto.getSaleRequestDto().stream().map(
+//                dto -> {
+//                    Sale sale = new Sale();
+//
+//                    sale.setProduct(savedProduct);
+//                    sale.setQuantity(dto.getQuantity());
+//                    sale.setPrice(dto.getPrice());
+//
+//                    return sale;
+//        }).collect(Collectors.toList());
 
-                    sale.setProduct(savedProduct);
-                    sale.setQuantity(dto.getQuantity());
-                    sale.setPrice(dto.getPrice());
-
-                    return sale;
-        }).collect(Collectors.toList());
-
-        saleRepository.saveAll(sales);
+        //       saleRepository.saveAll(sales);
 
         return createProductDto(savedProduct);
     }
@@ -106,7 +118,7 @@ public class ProductServiceImplement implements ProductServiceInterface {
         productRepository.save(productExists);
 
         // Retorna o DTO com as infos do usuario encontrado
-        return  createProductDto(productExists);
+        return createProductDto(productExists);
     }
 
     // Função pra retornar o productResponseDto

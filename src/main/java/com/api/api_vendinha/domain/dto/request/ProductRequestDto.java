@@ -1,12 +1,8 @@
 package com.api.api_vendinha.domain.dto.request;
 
-import com.api.api_vendinha.domain.entity.Sale;
-import com.api.api_vendinha.domain.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,6 +13,9 @@ public class ProductRequestDto {
     private Float price;
     private Boolean isActive;
 
-    private User user;
-    private List<Sale> saleRequestDto;
+    private Long userId;
+
 }
+
+//import com.api.api_vendinha.domain.entity.Sale;
+//    private List<Sale> saleRequestDto;

@@ -18,18 +18,17 @@ import java.util.Optional;
 public class SaleController {
 
     private final SaleServiceInterface saleService;
-    private final ProductServiceInterface productService;
 
     @Autowired
-    public SaleController(SaleServiceInterface saleService, ProductServiceInterface productService) {
+    public SaleController(SaleServiceInterface saleService) {
         this.saleService = saleService;
-        this.productService = productService;
     }
 
     // Métodos:
     // POST
     @PostMapping("/save")
     public SaleResponseDto saveSale(@RequestBody SaleRequestDto saleRequestDto) {
+        System.out.println(saleRequestDto);
         return saleService.saveSale(saleRequestDto);
     }
 

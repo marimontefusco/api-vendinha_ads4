@@ -20,14 +20,14 @@ public class UserServiceImplement implements UserServiceInterface {
     // variável do userRepository para persistência de dados de usuários
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
-    private final SaleRepository saleRepository;
+        //private final SaleRepository saleRepository;
 
     // Construtor p injeção de depend do UserRepository
     @Autowired
-    public UserServiceImplement(UserRepository userRepository, ProductRepository productRepository, SaleRepository saleRepository) {
+    public UserServiceImplement(UserRepository userRepository, ProductRepository productRepository){ // , SaleRepository saleRepository) {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
-        this.saleRepository = saleRepository;
+            //this.saleRepository = saleRepository;
     }
 
     // Método POST
@@ -42,43 +42,46 @@ public class UserServiceImplement implements UserServiceInterface {
         user.setEmail(userRequestDto.getEmail());
         user.setPassword(userRequestDto.getPassword());
         user.setCpf_cnpj(userRequestDto.getCpf_cnpj());
-        user.setIs_active(Boolean.TRUE);
-            //user.setIs_active(userRequestDto.getIs_active());
+        user.setIs_active(userRequestDto.getIs_active());
+            //user.setIs_active(Boolean.TRUE);
+
 
         // Salva o usuário no bd e obtém a entidade persistida com o id gerado
         User savedUser = userRepository.save(user);
 
-        // Converte numa collection -> coleção de lista de todos os objetos criados a partir de cada atributo
-        List<Product> products = userRequestDto.getProductRequestDto().stream().map(
-                dto -> {
-                    Product product = new Product();
+        if(!userRequestDto.getProductRequestDto().isEmpty()){
+            // Converte numa collection -> coleção de lista de todos os objetos criados a partir de cada atributo
+            List<Product> products = userRequestDto.getProductRequestDto().stream().map(
+                    dto -> {
+                        Product product = new Product();
 
-                    product.setUser(savedUser);
-                    product.setName(dto.getName());
-                    product.setQuantity(dto.getQuantity());
-                    product.setPrice(dto.getPrice());
-                    product.setIsActive(dto.getIsActive());
+                        product.setUser(savedUser);
+                        product.setName(dto.getName());
+                        product.setQuantity(dto.getQuantity());
+                        product.setPrice(dto.getPrice());
+                        product.setIsActive(dto.getIsActive());
 
-                    return product;
-        }).collect(Collectors.toList());
+                        return product;
+                    }).collect(Collectors.toList());
 
-        // agora ele pode salvar a lista toda de produtos
-        productRepository.saveAll(products);
+            // agora ele pode salvar a lista toda de produtos
+            productRepository.saveAll(products);
+        }
 
-        List<Sale> sales =  userRequestDto.getSaleRequestDto().stream().map(
-                dto -> {
-                    Sale sale = new Sale();
-
-                    sale.setUser(savedUser);
-                    //sale.setProduct()
-                    sale.setQuantity(dto.getQuantity());
-                    sale.setPrice(dto.getPrice());
-
-                    return sale;
-                }).collect(Collectors.toList());
-
-        // agora ele pode salvar a lista toda de vendas
-        saleRepository.saveAll(sales);
+//        List<Sale> sales =  userRequestDto.getSaleRequestDto().stream().map(
+//                dto -> {
+//                    Sale sale = new Sale();
+//
+//                    sale.setUser(savedUser);
+//                    //sale.setProduct()
+//                    sale.setQuantity(dto.getQuantity());
+//                    sale.setPrice(dto.getPrice());
+//
+//                    return sale;
+//                }).collect(Collectors.toList());
+//
+//        // agora ele pode salvar a lista toda de vendas
+//        saleRepository.saveAll(sales);
 
         // Cria um DTO de resposta com as infos do usuário salvo
         return createUserDto(savedUser);

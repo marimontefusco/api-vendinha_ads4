@@ -12,5 +12,6 @@ public class ProductResponseDto {
     private String name;
     private Integer quantity;
     private Float price;
-    private Boolean isActive;
 }
+
+//private Boolean isActive;

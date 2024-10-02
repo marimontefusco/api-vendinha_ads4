@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class SaleResponseDto {
     private Long id;
+    private Long userId;
+    private Long productId;
     private Integer quantity;
     private Float price;
 }
